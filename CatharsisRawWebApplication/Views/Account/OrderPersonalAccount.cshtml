@@ -1,0 +1,43 @@
+﻿
+@model UserOrder;
+
+
+
+@using CatharsisRawWebApplication.Domain;
+@inject AppDbContext context;
+
+
+<h1>Здесь ты можешь сделать заказ</h1>
+<form method="post" asp-action="OrderPersonalAccount" asp-controller="Account">
+
+    <p>
+        <b>Ваше имя:</b><br>
+        <input id="nameText" size="40" required asp-for="NameClient" class="form-control rounded-input" placeholder="Ваше имя">
+        <span asp-validation-for="NameClient"></span>
+    </p>
+    <p>
+        <b>Какую съёмку вы хотите организовать:</b><Br>
+    </p>
+    <div>
+      
+
+        @Html.DropDownListFor(x => x.service.Title, (SelectList)ViewBag.selectListItems, new { htmlAttributes = new { @class = "form-control" } })
+     
+    </div>
+    <p>
+        <b>Выберите дату съёмки:</b><br>
+        <input type="date" id="last-start-date" min="2021-05-25" max="2021-05-31" asp-for="PointDate" value="@DateTime.Now.ToShortDateString()">
+        <span style="color:red">@ViewData["Message"]</span>
+    </p>
+    <p>
+        Комментарий<Br>
+        <textarea cols="40" rows="3" required class="form-control rounded-input" asp-for="Comment"></textarea>
+    </p>
+    <p>
+        <button id="acceptButton" type="submit" value="Отправить" class="button">Отправить</button>
+
+    </p>
+</form>
+
+
+

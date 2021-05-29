@@ -1,0 +1,72 @@
+﻿@model IQueryable<UserOrder>
+@using CatharsisRawWebApplication.Domain;
+
+@inject AppDbContext context;
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<style>
+    .orderDiv {
+        border-width: medium;
+        border-color: rgb(190,190,190);
+        border-style: solid;
+        box-sizing: border-box;
+        padding: 20px 20px;
+    }
+</style>
+
+@foreach (UserOrder order in context.UserOrders.Where(p => p.idClient == User.Claims.First().Value))
+{
+<div class="orderDiv">
+    @if (order.idClient == User.Claims.First().Value)
+    {
+
+        <h3>№ заказа: @order.IdUserOrder</h3>
+        <h3>Имя клиента: @order.NameClient</h3>
+        <h3>Телефон: @order.PhoneNumber</h3>
+        <h3>Планируемая дата реализации фотосессии: @order.PointDate.ToShortDateString()</h3>
+
+        @foreach (StatusOrders item in context.statusOrders)
+        {
+            if (context.statusOrders.Find(order.statusId).StatusId == order.statusId)
+            {
+                <h3 style="color:green;">Статус заказа:@context.statusOrders.Find(order.statusId).StatusName</h3>
+                break;
+            }
+        }
+
+        @foreach (ServiceItem item in context.ServiceItems)
+        {
+            if (context.ServiceItems.Find(order.serviceId).Id == order.serviceId)
+            {
+                <h3>Услуга:@context.ServiceItems.Find(order.serviceId).Description</h3>
+                break;
+            }
+        }
+        <p>
+            Комментарий:<Br>
+            <textarea cols="40" rows="3" required class="form-control rounded-input" asp-for="@order.Comment" readonly>@order.Comment</textarea>
+        </p>
+        @if (order.FileRARName != null)
+        {
+            <h3>Ваш архив с фотографиями (@order.FileRARName)</h3>
+
+
+
+            <a href="/Account/Download/@order.IdUserOrder" class="button">Скачать файл</a>
+        }
+        else
+        {
+            <h3>Здесь будет файл для скачивания после выполненной работы</h3>
+        }
+    }
+    else
+    {
+        <h3>Произошла ошибка!</h3>
+    }
+</div>
+  
+
+
+
+}

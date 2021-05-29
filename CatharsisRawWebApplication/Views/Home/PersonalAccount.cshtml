@@ -1,0 +1,33 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <nav id="nav">
+            <a asp-area="" asp-controller="Account" asp-action="MyProfilePage" asp-route-id="@User.Claims.First().Value" class="button">Мой профиль</a><br><br>
+            <a asp-area="" asp-controller="Account" asp-action="OrderPersonalAccount" class="button">Сделать заказ</a><br><br>
+            <a asp-area="" asp-controller="Account" asp-action="OrderListPersonalAccount" asp-route-id="" class="button">Мои заказы</a><br><br>
+
+
+
+
+        </nav>
+        <div class="div-box">
+            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                <input type="submit" value="Выйти" class="button" />
+            </form>
+        </div>
+    }
+    else
+    {
+        
+
+        <nav id="nav">
+
+            <a asp-area="" asp-controller="Account" asp-action="Login" class="button">Авторизоваться</a>
+            <span> </span>
+            <a asp-area="" asp-controller="Account" asp-action="Registration" class="button">Зарегистрироваться</a>
+        </nav>
+    }
+
+</div>

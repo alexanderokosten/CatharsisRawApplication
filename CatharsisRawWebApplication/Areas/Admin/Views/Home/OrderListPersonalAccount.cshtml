@@ -1,0 +1,141 @@
+﻿@model IQueryable<UserOrder>
+@using CatharsisRawWebApplication.Domain;
+
+
+
+
+@inject AppDbContext context;
+<style>
+    .orderDiv {
+        border-width: medium;
+        border-color: rgb(190,190,190);
+        border-style: solid;
+        box-sizing: border-box;
+        padding: 20px 20px;
+        
+    }
+</style>
+<a asp-action="PendingOrdersList" asp-controller="Home" asp-area="Admin" class="button">Ожидающие заказы</a><br><br>
+<a asp-action="ClosedOrderList" asp-controller="Home" asp-area="Admin" class="button">Завершённые заказы</a><br><br><br>
+
+
+@foreach (UserOrder order in context.UserOrders)
+{
+   
+    if (order.statusId == 3) //Заказ принят
+    {
+
+        <form method="post" asp-action="OrderListPersonalAccount" asp-controller="Home" asp-route-id="@order.IdUserOrder" asp-area="Admin">
+            <div class="orderDiv">
+
+
+                <h3>Номер заказа:</h3><input asp-for="@order.IdUserOrder" class="form-control rounded-input" readonly value="@order.IdUserOrder" /><br><br><br>
+                <h3>Имя клиента:</h3><input asp-for="@order.NameClient" class="form-control rounded-input" readonly value="@order.NameClient" /><br><br><br>
+                <h3>Телефон:</h3><input asp-for="@order.PhoneNumber" class="form-control rounded-input" readonly value="@order.PhoneNumber" /><br><br><br>
+                <h3>Планируемая дата реализации фотосессии:</h3>
+
+
+                <input asp-for="@order.CorrectDateTime" class="form-control rounded-input" value="@order.CorrectDateTime" /><br><br><br>
+
+                @foreach (StatusOrders item in context.statusOrders)
+                {
+                    if (context.statusOrders.Find(order.statusId).StatusId == order.statusId)
+                    {
+                        <h3>Статус заказа</h3><input type="text" asp-for="@order.statusId" class="form-control rounded-input" readonly value="@context.statusOrders.Find(order.statusId).StatusName" /><br><br><br>
+                        break;
+                    }
+                }
+
+
+
+                @foreach (ServiceItem item in context.ServiceItems)
+                {
+                    if (context.ServiceItems.Find(order.serviceId).Id == order.serviceId)
+                    {
+                        <h3>Услуга:</h3><input asp-for="@order.serviceId" class="form-control rounded-input" readonly value="@context.ServiceItems.Find(order.serviceId).Description" /><br><br><br>
+
+                        break;
+                    }
+                }
+                <p>
+                    Комментарий:<Br>
+                    <textarea cols="40" rows="3" required class="form-control rounded-input" readonly asp-for="@order.Comment">@order.Comment</textarea>
+                </p><br><br><br>
+                @if (order.FileRARName != null)
+                {
+                    //вывести файл для скачивания
+                }
+                else
+                {
+                    <h3>Здесь будет файл для скачивания после выполненной работы</h3><br><br><br>
+                }
+                <input type="submit" value="Фото в обработке" name="photoInTreatment" class="button" />
+
+
+
+
+
+            </div>
+        </form>
+    }
+    else if (order.statusId == 4) //Заказ обработан, надо прикрепить файл
+    {
+        <form method="post" enctype="multipart/form-data" asp-action="OrderListPersonalAccount" asp-controller="Home" asp-route-id="@order.IdUserOrder" asp-area="Admin">
+            <div class="orderDiv">
+
+
+                <h3>Номер заказа:</h3><input asp-for="@order.IdUserOrder" class="form-control rounded-input" readonly value="@order.IdUserOrder" /><br><br><br>
+                <h3>Имя клиента:</h3><input asp-for="@order.NameClient" class="form-control rounded-input" readonly value="@order.NameClient" /><br><br><br>
+                <h3>Телефон:</h3><input asp-for="@order.PhoneNumber" class="form-control rounded-input" readonly value="@order.PhoneNumber" /><br><br><br>
+                <h3>Планируемая дата реализации фотосессии:</h3>
+                <input asp-for="@order.CorrectDateTime" class="form-control" readonly value="@order.CorrectDateTime" /><br><br><br>
+                @foreach (StatusOrders item in context.statusOrders)
+                {
+                    if (context.statusOrders.Find(order.statusId).StatusId == order.statusId)
+                    {
+                        <h3>Статус заказа</h3><input type="text" asp-for="@order.statusId" class="form-control rounded-input" readonly value="@context.statusOrders.Find(order.statusId).StatusName" /><br><br><br>
+                        break;
+                    }
+                }
+
+                @foreach (ServiceItem item in context.ServiceItems)
+                {
+                    if (context.ServiceItems.Find(order.serviceId).Id == order.serviceId)
+                    {
+                        <h3>Услуга:</h3><input asp-for="@order.serviceId" class="form-control rounded-input" readonly value="@context.ServiceItems.Find(order.serviceId).Description" /><br><br><br>
+
+                        break;
+                    }
+                }
+                <p>
+                    Комментарий:<Br>
+                    <textarea cols="40" rows="3" required class="form-control rounded-input" readonly asp-for="@order.Comment">@order.Comment</textarea>
+                </p><br><br><br>
+                @if (order.FileRARName != null)
+                {
+                    //вывести файл для скачивания
+                }
+                else
+                {
+                    <h3>Здесь будет файл для скачивания после выполненной работы</h3><br><br><br>
+                }
+
+
+                <h3>Выберите архив с фотографиями:</h3>
+                <input type="file" name="postedFiles" class="button">
+                <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+                <input type="submit" value="Завершить заказ" name="CloseOrder" class="button" />
+
+
+
+            </div>
+        </form>
+    }
+
+
+
+
+
+
+
+}

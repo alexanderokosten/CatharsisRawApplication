@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatharsisRawWebApplication", "CatharsisRawWebApplication\CatharsisRawWebApplication.csproj", "{F610B1CC-A381-4F9A-9717-955B4F6AB09E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F610B1CC-A381-4F9A-9717-955B4F6AB09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F610B1CC-A381-4F9A-9717-955B4F6AB09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F610B1CC-A381-4F9A-9717-955B4F6AB09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F610B1CC-A381-4F9A-9717-955B4F6AB09E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C17FE7E8-2172-4C55-A6C9-E40EBD4D9E1F}
+	EndGlobalSection
+EndGlobal

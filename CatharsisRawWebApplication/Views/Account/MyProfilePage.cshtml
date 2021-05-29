@@ -1,0 +1,31 @@
+﻿
+@model IdentityUser;
+@using CatharsisRawWebApplication.Domain;
+
+@inject AppDbContext context
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+
+
+@{
+    ViewBag.Title = Model.UserName;
+}
+<h3>Пользователь @Model.UserName</h3>
+<div>
+    <h3>Email: @Model.Email</h3>
+
+    <h3>Телефон: @Model.PhoneNumber</h3>
+   
+</div>
+
+<br>
+
+<a asp-action="EditProfile" asp-controller="Account"
+   asp-route-id="@User.Claims.First().Value" class="button" >Изменить данные</a>
+<br>
+<br>
+<a asp-action="EditPasswordUser" asp-controller="Account"
+   asp-route-id="@User.Claims.First().Value" class="button">Изменить пароль</a>
+

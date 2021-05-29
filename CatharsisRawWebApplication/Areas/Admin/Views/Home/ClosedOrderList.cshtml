@@ -1,0 +1,78 @@
+﻿@model IQueryable<UserOrder>
+@using CatharsisRawWebApplication.Domain;
+@inject AppDbContext context;
+
+<style>
+    .orderDiv {
+        border-width: medium;
+        border-color: rgb(190,190,190);
+        border-style: solid;
+        box-sizing: border-box;
+        padding: 20px 20px;
+    }
+</style>
+
+
+<a asp-area="Admin" asp-controller="Home" asp-action="OrderListPersonalAccount" class="button">Назад</a>
+
+@foreach (UserOrder order in context.UserOrders)
+{
+    if (order.statusId == 5) //Заказ завершён
+    {
+        <form method="post" asp-action="OrderListPersonalAccount" asp-controller="Home" asp-route-id="@order.IdUserOrder" asp-area="Admin">
+            <div class="orderDiv">
+
+
+                <h3>Номер заказа:</h3><input asp-for="@order.IdUserOrder" class="form-control rounded-input" readonly value="@order.IdUserOrder" /><br><br><br>
+                <h3>Имя клиента:</h3><input asp-for="@order.NameClient" class="form-control rounded-input" readonly value="@order.NameClient" /><br><br><br>
+                <h3>Телефон:</h3><input asp-for="@order.PhoneNumber" class="form-control rounded-input" readonly value="@order.PhoneNumber" /><br><br><br>
+                <h3>Планируемая дата реализации фотосессии:</h3>
+                <input asp-for="@order.CorrectDateTime" class="form-control rounded-input" readonly value="@order.CorrectDateTime" /><br><br><br>
+                @foreach (StatusOrders item in context.statusOrders)
+                {
+                    if (context.statusOrders.Find(order.statusId).StatusId == order.statusId)
+                    {
+                        <h3>Статус заказа</h3>
+                        <input type="text" asp-for="@order.statusId" class="form-control rounded-input" readonly value="@context.statusOrders.Find(order.statusId).StatusName" /><br><br><br>
+                        break;
+                    }
+                }
+
+                @foreach (ServiceItem item in context.ServiceItems)
+                {
+                    if (context.ServiceItems.Find(order.serviceId).Id == order.serviceId)
+                    {
+                        <h3>Услуга:</h3><input asp-for="@order.serviceId" class="form-control rounded-input" readonly value="@context.ServiceItems.Find(order.serviceId).Description" /><br><br><br>
+
+                        break;
+                    }
+                }
+                <p>
+                    Комментарий:<Br>
+                    <textarea cols="40" rows="3" required class="form-control rounded-input" readonly asp-for="@order.Comment">@order.Comment</textarea>
+                </p><br><br><br>
+                @if (order.FileRARName != null)
+                {
+                    <h3>Ваш архив с фотографиями (@order.FileRARName)</h3>
+                    <a asp-route-id="@order.IdUserOrder" asp-action="Download" asp-controller="Home" asp-area="Admin" class="button">Скачать файл</a><br><br><br>
+                }
+                else
+                {
+                    <h3>Здесь будет файл для скачивания после выполненной работы</h3><br><br><br>
+                }
+
+
+                <h3>Заказ завершён</h3>
+
+
+            </div>
+        </form>
+    }
+
+
+
+
+
+
+}
+
